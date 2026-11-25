@@ -1,0 +1,18 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "services": {
+    "esign": {
+      "root": ".",
+      "runtime": "container",
+      "entrypoint": "docker/Dockerfile"
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": {
+        "service": "esign"
+      }
+    }
+  ]
+}
