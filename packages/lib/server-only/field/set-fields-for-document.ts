@@ -348,7 +348,7 @@ export const setFieldsForDocument = async ({
       removedFields,
       persistedFields,
     };
-  });
+  }, { maxWait: 15000, timeout: 60000 });
 
   // Filter out fields that have been removed or have been updated.
   const mappedFilteredFields = existingFields

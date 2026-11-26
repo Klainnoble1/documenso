@@ -352,7 +352,7 @@ export const updateEnvelope = async ({
     }
 
     return result;
-  });
+  }, { maxWait: 15000, timeout: 60000 });
 
   // Recompute reminders for active recipients when reminder settings change.
   if (meta && 'reminderSettings' in meta) {

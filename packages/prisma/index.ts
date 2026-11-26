@@ -14,8 +14,10 @@ const prisma = remember(
     new PrismaClient({
       datasourceUrl: getDatabaseUrl(),
       transactionOptions: {
-        maxWait: 5000,
-        timeout: 10000,
+        maxWait: 15000,
+        // Field saves upsert every field inside one interactive transaction.
+        // A multi-page package exceeds the 10s default on a local database.
+        timeout: 60000,
       },
     }),
 );

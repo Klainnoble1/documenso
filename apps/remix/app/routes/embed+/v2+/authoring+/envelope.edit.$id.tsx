@@ -23,7 +23,6 @@ import { Spinner } from '@documenso/ui/primitives/spinner';
 import { useToast } from '@documenso/ui/primitives/use-toast';
 import { Trans, useLingui } from '@lingui/react/macro';
 import { EnvelopeType } from '@prisma/client';
-import { CheckCircle2Icon } from 'lucide-react';
 import { useLayoutEffect, useMemo, useState } from 'react';
 import { redirect, type ShouldRevalidateFunctionArgs } from 'react-router';
 
@@ -130,20 +129,26 @@ export default function EmbeddingAuthoringEnvelopeEditPage() {
   const [embedAuthoringOptions, setEmbedAuthoringOptions] = useState<TEmbedEditEnvelopeAuthoring | null>(null);
 
   useLayoutEffect(() => {
-    try {
-      const hash = window.location.hash.slice(1);
+    const fallback = ZEmbedEditEnvelopeAuthoringSchema.parse({});
+    const hash = window.location.hash.slice(1);
+    const candidates = [hash, decodeURIComponent(hash)];
 
-      if (hash) {
-        const result = ZEmbedEditEnvelopeAuthoringSchema.safeParse(JSON.parse(decodeURIComponent(atob(hash))));
-
+    for (const candidate of candidates) {
+      if (!candidate) continue;
+      try {
+        const decoded = decodeURIComponent(atob(candidate));
+        const result = ZEmbedEditEnvelopeAuthoringSchema.safeParse(JSON.parse(decoded));
         if (result.success) {
           setEmbedAuthoringOptions(result.data);
+          setHasInitialized(true);
+          return;
         }
+      } catch {
+        // The portal hash is base64 of URI-encoded JSON. A percent-encoded copy is tried next.
       }
-    } catch (err) {
-      console.error('Error parsing embedding params:', err);
     }
 
+    setEmbedAuthoringOptions(fallback);
     setHasInitialized(true);
   }, []);
 
@@ -177,7 +182,6 @@ const EnvelopeEditPage = ({ embedAuthoringOptions }: EnvelopeEditPageProps) => {
   const { toast } = useToast();
 
   const [isUpdatingEnvelope, setIsUpdatingEnvelope] = useState(false);
-  const [updatedEnvelope, setUpdatedEnvelope] = useState<{ id: string } | null>(null);
 
   const { mutateAsync: updateEmbeddingEnvelope } = trpc.embeddingPresign.updateEmbeddingEnvelope.useMutation();
 
@@ -317,7 +321,8 @@ const EnvelopeEditPage = ({ embedAuthoringOptions }: EnvelopeEditPageProps) => {
 
       await updateEmbeddingEnvelope(formData);
 
-      // Send a message to the parent window with the document details
+      // Send a message to the parent window with the document details.
+      // Stay in the editor so staff can keep reviewing and editing inside the portal iframe.
       if (window.parent !== window) {
         window.parent.postMessage(
           {
@@ -329,8 +334,10 @@ const EnvelopeEditPage = ({ embedAuthoringOptions }: EnvelopeEditPageProps) => {
         );
       }
 
-      // Navigate to the completion page.
-      setUpdatedEnvelope({ id: envelope.id });
+      toast({
+        title: t`Saved`,
+        description: t`The document was saved. You can keep editing or send it from the portal.`,
+      });
     } catch (err) {
       console.error('Failed to update envelope:', err);
 
@@ -368,7 +375,7 @@ const EnvelopeEditPage = ({ embedAuthoringOptions }: EnvelopeEditPageProps) => {
   );
 
   return (
-    <div className="relative min-h-screen min-w-screen">
+    <div className="relative h-dvh w-full overflow-hidden">
       {isUpdatingEnvelope && (
         <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-background">
           <Spinner />
@@ -380,30 +387,6 @@ const EnvelopeEditPage = ({ embedAuthoringOptions }: EnvelopeEditPageProps) => {
               <Trans>Updating Template</Trans>
             )}
           </p>
-        </div>
-      )}
-
-      {updatedEnvelope && (
-        <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-background">
-          <div className="mx-auto w-full max-w-md text-center">
-            <CheckCircle2Icon className="mx-auto h-16 w-16 text-primary" />
-
-            <h1 className="mt-6 font-bold text-2xl">
-              {envelope.type === EnvelopeType.TEMPLATE ? (
-                <Trans>Template Updated</Trans>
-              ) : (
-                <Trans>Document Updated</Trans>
-              )}
-            </h1>
-
-            <p className="mt-2 text-muted-foreground">
-              {envelope.type === EnvelopeType.TEMPLATE ? (
-                <Trans>Your template has been updated successfully</Trans>
-              ) : (
-                <Trans>Your document has been updated successfully</Trans>
-              )}
-            </p>
-          </div>
         </div>
       )}
 

@@ -175,11 +175,11 @@ export const EnvelopeEditor = () => {
   const currentStepData = envelopeEditorSteps.find((step) => step.id === searchParamsStep) || envelopeEditorSteps[0];
 
   return (
-    <div className="h-screen w-screen bg-envelope-editor-background">
+    <div className="flex h-dvh w-full min-w-0 flex-col overflow-hidden bg-envelope-editor-background">
       <EnvelopeEditorHeader />
 
       {/* Main Content Area */}
-      <div className="flex h-[calc(100vh-4rem)] w-screen">
+      <div className="flex min-h-0 w-full min-w-0 flex-1">
         {/* Left Section - Step Navigation */}
         <div
           className={cn('flex w-80 flex-shrink-0 flex-col overflow-y-auto border-border border-r bg-background py-4', {
@@ -188,7 +188,7 @@ export const EnvelopeEditor = () => {
         >
           {/* Left section step selector. */}
           {minimizeLeftSidebar ? (
-            <div className="flex justify-center px-4">
+            <div className="flex justify-center">
               <div className="relative flex h-10 w-10 items-center justify-center">
                 <svg className="size-10 -rotate-90" viewBox="0 0 40 40" aria-hidden>
                   {/* Track circle */}
@@ -275,6 +275,7 @@ export const EnvelopeEditor = () => {
                     }`,
                     {
                       'p-3': !minimizeLeftSidebar,
+                      'p-2': minimizeLeftSidebar,
                     },
                   )}
                   onClick={() => void navigateToStep(step.id as EnvelopeEditorStep)}
@@ -519,7 +520,8 @@ export const EnvelopeEditor = () => {
         </div>
 
         {/* Main Content - Changes based on current step */}
-        <div className="flex-1 overflow-y-auto">
+        <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
+          <div className="min-h-0 flex-1 overflow-y-auto">
           {match({
             pageToRender,
             allowUploadAndRecipientStep,
@@ -531,6 +533,7 @@ export const EnvelopeEditor = () => {
             .with({ pageToRender: 'addFields', allowAddFieldsStep: true }, () => <EnvelopeEditorFieldsPage />)
             .with({ pageToRender: 'preview', allowPreviewStep: true }, () => <EnvelopeEditorPreviewPage />)
             .otherwise(() => null)}
+          </div>
         </div>
       </div>
     </div>
