@@ -141,9 +141,8 @@ export function LayoutContent({ children }: { children: React.ReactNode }) {
     <html translate="no" lang={lang} data-theme={theme} className={theme ?? ''} suppressHydrationWarning>
       <head>
         <meta charSet="utf-8" />
-        <link rel="apple-touch-icon" sizes="180x180" href={`${basePath}/apple-touch-icon.png`} />
-        <link rel="icon" type="image/png" sizes="32x32" href={`${basePath}/favicon-32x32.png`} />
-        <link rel="icon" type="image/png" sizes="16x16" href={`${basePath}/favicon-16x16.png`} />
+        <link rel="apple-touch-icon" href={`${basePath}/premier-lending-logo.png`} />
+        <link rel="icon" type="image/png" href={`${basePath}/premier-lending-logo.png`} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="manifest" href={`${basePath}/site.webmanifest`} />
         <meta name="google" content="notranslate" />
@@ -171,7 +170,7 @@ export function LayoutContent({ children }: { children: React.ReactNode }) {
             <div className="mx-auto flex h-auto max-w-screen-xl items-center justify-center px-4 py-3 text-sm font-medium">
               <div className="flex items-center">
                 <AlertTriangleIcon className="mr-2 h-4 w-4" />
-                <Trans>This is an expired license instance of Documenso</Trans>
+                <Trans>This is an expired license instance of Premier Lending Esign</Trans>
               </div>
             </div>
           </div>

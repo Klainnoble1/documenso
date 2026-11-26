@@ -12,15 +12,15 @@ export function meta({ params: { slug } }: Route.MetaArgs) {
   }
 
   return [
-    { title: 'Documenso - Share' },
-    { description: 'I just signed a document in style with Documenso!' },
+    { title: 'Premier Lending Esign - Share' },
+    { description: 'I just signed a document in style with Premier Lending Esign!' },
     {
       property: 'og:title',
-      content: 'Documenso - Join the open source signing revolution',
+      content: 'Premier Lending Esign - Join the open source signing revolution',
     },
     {
       property: 'og:description',
-      content: 'I just signed with Documenso!',
+      content: 'I just signed with Premier Lending Esign!',
     },
     {
       property: 'og:type',
@@ -28,11 +28,7 @@ export function meta({ params: { slug } }: Route.MetaArgs) {
     },
     {
       property: 'og:image',
-      content: `${NEXT_PUBLIC_WEBAPP_URL()}/share/${slug}/opengraph`,
-    },
-    {
-      name: 'twitter:site',
-      content: '@documenso',
+      content: `${NEXT_PUBLIC_WEBAPP_URL()}/premier-lending-logo.png`,
     },
     {
       name: 'twitter:card',
@@ -40,11 +36,11 @@ export function meta({ params: { slug } }: Route.MetaArgs) {
     },
     {
       name: 'twitter:image',
-      content: `${NEXT_PUBLIC_WEBAPP_URL()}/share/${slug}/opengraph`,
+      content: `${NEXT_PUBLIC_WEBAPP_URL()}/premier-lending-logo.png`,
     },
     {
       name: 'twitter:description',
-      content: 'I just signed with Documenso!',
+      content: 'I just signed with Premier Lending Esign!',
     },
   ];
 }
@@ -69,8 +65,7 @@ export const loader = async ({ request, params: { slug } }: Route.LoaderArgs) =>
     return {};
   }
 
-  // Is hardcoded because this whole meta is hardcoded anyway for Documenso.
-  throw redirect('https://documenso.com');
+  throw redirect('/');
 };
 
 export default function SharePage() {

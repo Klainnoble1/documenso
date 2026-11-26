@@ -189,7 +189,7 @@ export const EditorFieldAdvancedForm = ({
                     </FormControl>
                     <FormDescription>
                       {IS_DOCUMENSO_CLOUD() ? (
-                        <Trans>An identifier for your own systems. Not used by Documenso.</Trans>
+                        <Trans>An identifier for your own systems. Not used by Premier Lending Esign.</Trans>
                       ) : (
                         <Trans>An identifier for your own systems.</Trans>
                       )}

@@ -3,17 +3,17 @@
   "short_name": "PL Esign",
   "icons": [
     {
-      "src": "./android-chrome-192x192.png",
-      "sizes": "192x192",
+      "src": "./premier-lending-logo.png",
+      "sizes": "any",
       "type": "image/png"
     },
     {
-      "src": "./android-chrome-512x512.png",
-      "sizes": "512x512",
+      "src": "./premier-lending-logo.png",
+      "sizes": "any",
       "type": "image/png"
     }
   ],
-  "theme_color": "#A2E771",
+  "theme_color": "#005952",
   "background_color": "#FFFFFF",
   "display": "standalone"
 }

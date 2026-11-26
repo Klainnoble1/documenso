@@ -35,7 +35,7 @@ export const appMetaTags = (title?: MessageDescriptor) => {
     },
     {
       property: 'og:image',
-      content: `${NEXT_PUBLIC_WEBAPP_URL()}/opengraph-image.jpg`,
+      content: `${NEXT_PUBLIC_WEBAPP_URL()}/premier-lending-logo.png`,
     },
     {
       property: 'og:type',
@@ -51,7 +51,7 @@ export const appMetaTags = (title?: MessageDescriptor) => {
     },
     {
       name: 'twitter:image',
-      content: `${NEXT_PUBLIC_WEBAPP_URL()}/opengraph-image.jpg`,
+      content: `${NEXT_PUBLIC_WEBAPP_URL()}/premier-lending-logo.png`,
     },
   ];
 };
