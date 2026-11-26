@@ -190,6 +190,15 @@ export function LayoutContent({ children }: { children: React.ReactNode }) {
           </SessionProvider>
         </NuqsAdapter>
 
+        <a
+          href="https://github.com/Klainnoble1/documenso"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="fixed bottom-2 left-2 z-50 rounded bg-background/90 px-2 py-1 text-xs text-muted-foreground underline"
+        >
+          Source code
+        </a>
+
         <script
           nonce={nonce(cspNonce)}
           dangerouslySetInnerHTML={{
