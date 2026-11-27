@@ -143,27 +143,43 @@ export const UnifiedSettingsLayout = ({ activeScope, preferredTeamUrl = null }: 
   const crumbs = getSettingsNavCrumbs(activeNav).map((label) => _(label));
 
   return (
-    <SettingsLayoutShell
-      sidebar={
-        <UnifiedSettingsSidebar
-          groups={groups}
-          activeItem={activeItem}
-          currentOrgUrl={organisation?.url ?? null}
-          currentTeamUrl={teamForSidebar?.url ?? null}
-        />
-      }
-      mobileSidebar={
-        <UnifiedSettingsSidebarMobile
-          groups={groups}
-          activeItem={activeItem}
-          activeScope={activeScope}
-          currentOrgUrl={organisation?.url ?? null}
-          currentTeamUrl={teamForSidebar?.url ?? null}
-        />
-      }
-    >
-      <SettingsScopeBreadcrumb scope={activeScope} scopeName={scopeName} crumbs={crumbs} />
-      <Outlet />
-    </SettingsLayoutShell>
+    <div className="flex flex-col md:min-h-0 md:flex-1 md:flex-row">
+      <aside className="hover-scrollbar w-full shrink-0 border-b bg-background md:w-80 md:overflow-y-auto md:border-r md:border-b-0">
+        <div className="flex h-full flex-col">
+          <div className="hidden md:block">
+            <UnifiedSettingsSidebar
+              groups={groups}
+              currentOrgUrl={organisation?.url ?? null}
+              currentTeamUrl={teamForSidebar?.url ?? null}
+            />
+          </div>
+          <div className="md:hidden">
+            <UnifiedSettingsSidebarMobile
+              groups={groups}
+              activeScope={activeScope}
+              currentOrgUrl={organisation?.url ?? null}
+              currentTeamUrl={teamForSidebar?.url ?? null}
+            />
+          </div>
+        </div>
+      </aside>
+
+      <main ref={contentPaneRef} className="relative flex-1 px-4 md:overflow-y-auto md:px-12 lg:px-16">
+        <div className="mx-auto w-full max-w-3xl py-6 md:py-8" data-testid="unified-settings-content">
+          <SettingsScopeBreadcrumb scope={activeScope} scopeName={scopeName} crumbs={crumbs} />
+          <Outlet />
+          <p className="mt-10 text-muted-foreground text-xs">
+            <a
+              href="https://github.com/Klainnoble1/documenso"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline"
+            >
+              Source code
+            </a>
+          </p>
+        </div>
+      </main>
+    </div>
   );
 };
