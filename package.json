@@ -44,7 +44,7 @@
   "packageManager": "npm@11.19.1",
   "engines": {
     "npm": ">=11.17.0",
-    "node": ">=24.0.0"
+    "node": "24.x"
   },
   "allowScripts": {
     "@documenso/skia-canvas": true,
