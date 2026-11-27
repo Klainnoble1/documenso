@@ -30,6 +30,7 @@ const ZTextFieldFormSchema = ZTextFieldMeta.pick({
   label: true,
   placeholder: true,
   text: true,
+  autofill: true,
   characterLimit: true,
   fontSize: true,
   textAlign: true,
@@ -71,6 +72,7 @@ export const EditorFieldTextForm = ({
       label: value.label || '',
       placeholder: value.placeholder || '',
       text: value.text || '',
+      autofill: value.autofill,
       characterLimit: value.characterLimit || 0,
       fontSize: value.fontSize || DEFAULT_FIELD_FONT_SIZE,
       textAlign: value.textAlign ?? FIELD_DEFAULT_GENERIC_ALIGN,
@@ -126,6 +128,32 @@ export const EditorFieldTextForm = ({
                 </FormLabel>
                 <FormControl>
                   <Input data-testid="field-form-label" placeholder={t`Field label`} {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="autofill"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>
+                  <Trans>Fill from the loan</Trans>
+                </FormLabel>
+                <FormControl>
+                  <select
+                    className="border-input bg-background flex h-10 w-full rounded-md border px-3 text-sm"
+                    value={field.value || ''}
+                    onChange={(event) => field.onChange(event.target.value || undefined)}
+                  >
+                    <option value="">{t`Signer enters text`}</option>
+                    <option value="borrower">{t`Borrower name`}</option>
+                    <option value="entity">{t`Entity`}</option>
+                    <option value="property">{t`Property address`}</option>
+                    <option value="date">{t`Current date`}</option>
+                  </select>
                 </FormControl>
                 <FormMessage />
               </FormItem>

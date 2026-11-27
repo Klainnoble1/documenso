@@ -312,7 +312,7 @@ export const setDocumentRecipients = async ({
       removedRecipients,
       persistedRecipients,
     };
-  });
+  }, { maxWait: 15000, timeout: 60000 });
 
   if (removedRecipients.length > 0) {
     const isRecipientRemovedEmailEnabled = extractDerivedDocumentEmailSettings(envelope.documentMeta).recipientRemoved;

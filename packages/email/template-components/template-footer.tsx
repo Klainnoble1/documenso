@@ -1,3 +1,4 @@
+import { NEXT_PUBLIC_WEBAPP_URL } from '@documenso/lib/constants/app';
 import { Trans } from '@lingui/react/macro';
 import { Fragment } from 'react';
 
@@ -33,8 +34,8 @@ export const TemplateFooter = ({ isDocument = true, reportUrl }: TemplateFooterP
         <Text className="my-4 text-base text-muted-foreground">
           <Trans>
             This document was sent using{' '}
-            <Link className="text-primary" href="https://documen.so/mail-footer">
-              Documenso
+            <Link className="text-primary" href={NEXT_PUBLIC_WEBAPP_URL()}>
+              Premier Lending Esign
             </Link>
             .
           </Trans>
@@ -64,9 +65,13 @@ export const TemplateFooter = ({ isDocument = true, reportUrl }: TemplateFooterP
 
       {!branding.brandingEnabled && (
         <Text className="my-8 text-muted-foreground text-sm">
-          Documenso, Inc.
-          <br />
-          2261 Market Street, #5211, San Francisco, CA 94114, USA
+          Premier Lending Esign
+          {process.env.NEXT_PRIVATE_COMPANY_MAILING_ADDRESS && (
+            <>
+              <br />
+              {process.env.NEXT_PRIVATE_COMPANY_MAILING_ADDRESS}
+            </>
+          )}
         </Text>
       )}
     </Section>

@@ -328,9 +328,9 @@ export const EnvelopeEditorFieldsPage = () => {
     <>
       {/* Never keyed: remounting it would remount the PDF viewer beneath it. */}
       <ContentSettingsFormProvider content={selectedContent ?? null}>
-        <div className="relative flex h-full">
+        <div className="grid h-full min-h-0 min-w-0 grid-cols-[minmax(0,1fr)_minmax(16rem,20rem)]">
           <div
-            className="flex h-full w-full flex-col overflow-x-auto overflow-y-auto px-2"
+            className="flex h-full min-h-0 min-w-0 flex-col overflow-x-auto overflow-y-auto px-2"
             ref={scrollableContainerRef}
           >
             {/* Horizontal envelope item selector */}
@@ -436,8 +436,8 @@ export const EnvelopeEditorFieldsPage = () => {
           </div>
 
           {/* Right Section - Form Fields Panel */}
-          {currentEnvelopeItem && envelope.recipients.length > 0 && (
-            <div className="sticky top-0 h-full w-80 flex-shrink-0 overflow-y-auto border-border border-l bg-background py-2">
+          {currentEnvelopeItem && (
+            <div className="h-full min-h-0 overflow-y-auto border-border border-l bg-background py-2">
               <Tabs value={selectedEditorTab} onValueChange={(value) => onEditorTabChange(value as EnvelopeEditorTab)}>
                 {allowContents && (
                   <TabsList className="-mt-4 flex w-full flex-row border-b pt-2 text-muted-foreground text-sm">
@@ -461,6 +461,18 @@ export const EnvelopeEditorFieldsPage = () => {
 
                 {/* Fields tab */}
                 <TabsContent value="fields">
+                  {envelope.recipients.length === 0 && (
+                    <section className="px-4 pb-4">
+                      <Alert>
+                        <AlertDescription>
+                          <Trans>Add a recipient on the Document & Recipients step before placing fields.</Trans>
+                        </AlertDescription>
+                      </Alert>
+                      <Button type="button" variant="outline" size="sm" className="mt-3 w-full" onClick={() => void navigateToStep('upload')}>
+                        <Trans>Add recipient</Trans>
+                      </Button>
+                    </section>
+                  )}
                   {/* Recipient selector section. */}
                   <section className="px-4">
                     <h3 className="mb-2 font-semibold text-foreground text-sm">

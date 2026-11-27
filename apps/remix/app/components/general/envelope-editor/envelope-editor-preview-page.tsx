@@ -225,8 +225,8 @@ export const EnvelopeEditorPreviewPage = () => {
         mode: 'export',
       }}
     >
-      <div className="relative flex h-full">
-        <div className="flex h-full w-full flex-col overflow-x-auto overflow-y-auto px-2" ref={scrollableContainerRef}>
+      <div className="relative flex h-full min-h-0 min-w-0">
+        <div className="flex h-full min-w-0 flex-1 flex-col overflow-x-auto overflow-y-auto px-2" ref={scrollableContainerRef}>
           {/* Horizontal envelope item selector */}
           <EnvelopeRendererFileSelector className="px-0" fields={editorFields.localFields} />
 

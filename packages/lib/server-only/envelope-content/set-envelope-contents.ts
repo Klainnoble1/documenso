@@ -295,7 +295,7 @@ export const setEnvelopeContents = async ({
     }
 
     return upsertedContents;
-  });
+  }, { maxWait: 15000, timeout: 60000 });
 
   return {
     contents: persistedContents,
