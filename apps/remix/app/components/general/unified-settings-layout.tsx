@@ -12,7 +12,7 @@ import { Button } from '@documenso/ui/primitives/button';
 import { msg } from '@lingui/core/macro';
 import { useLingui } from '@lingui/react';
 import { Trans } from '@lingui/react/macro';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { Link, Outlet, useLocation } from 'react-router';
 import { match } from 'ts-pattern';
 import { GenericErrorLayout } from '~/components/general/generic-error-layout';
@@ -40,6 +40,11 @@ export const UnifiedSettingsLayout = ({ activeScope, preferredTeamUrl = null }: 
 
   const currentOrganisation = useOptionalCurrentOrganisation();
   const team = useOptionalCurrentTeam();
+  const contentPaneRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    contentPaneRef.current?.scrollTo(0, 0);
+  }, [pathname]);
 
   // An organisation is worth showing in the sidebar if it has settings the user can reach —
   // either the organisation's own, or those of a team inside it.
@@ -149,6 +154,7 @@ export const UnifiedSettingsLayout = ({ activeScope, preferredTeamUrl = null }: 
           <div className="hidden md:block">
             <UnifiedSettingsSidebar
               groups={groups}
+              activeItem={activeItem}
               currentOrgUrl={organisation?.url ?? null}
               currentTeamUrl={teamForSidebar?.url ?? null}
             />
@@ -156,6 +162,7 @@ export const UnifiedSettingsLayout = ({ activeScope, preferredTeamUrl = null }: 
           <div className="md:hidden">
             <UnifiedSettingsSidebarMobile
               groups={groups}
+              activeItem={activeItem}
               activeScope={activeScope}
               currentOrgUrl={organisation?.url ?? null}
               currentTeamUrl={teamForSidebar?.url ?? null}
