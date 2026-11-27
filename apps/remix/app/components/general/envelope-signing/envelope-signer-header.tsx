@@ -119,7 +119,7 @@ const MobileDropdownMenu = () => {
           />
         )}
 
-        {envelope.type === EnvelopeType.DOCUMENT && allowDocumentRejection !== false && (
+        {envelope.type === EnvelopeType.DOCUMENT && allowDocumentRejection === true && (
           <DocumentSigningRejectDialog
             documentId={mapSecondaryIdToDocumentId(envelope.secondaryId)}
             token={recipient.token}

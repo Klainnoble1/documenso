@@ -60,7 +60,7 @@ export const DocumentSigningPageViewV2 = () => {
 
   const {
     isEmbed = false,
-    allowDocumentRejection = true,
+    allowDocumentRejection = false,
     allowDownloadPDF = true,
     hidePoweredBy = true,
     onDocumentRejected,

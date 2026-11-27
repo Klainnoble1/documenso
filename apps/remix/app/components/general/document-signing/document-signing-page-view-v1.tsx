@@ -42,7 +42,6 @@ import { DocumentSigningInitialsField } from '~/components/general/document-sign
 import { DocumentSigningNameField } from '~/components/general/document-signing/document-signing-name-field';
 import { DocumentSigningNumberField } from '~/components/general/document-signing/document-signing-number-field';
 import { DocumentSigningRadioField } from '~/components/general/document-signing/document-signing-radio-field';
-import { DocumentSigningRejectDialog } from '~/components/general/document-signing/document-signing-reject-dialog';
 import { DocumentSigningSignatureField } from '~/components/general/document-signing/document-signing-signature-field';
 import { DocumentSigningTextField } from '~/components/general/document-signing/document-signing-text-field';
 import PDFViewerLazy from '~/components/general/pdf-viewer/pdf-viewer-lazy';
@@ -243,7 +242,6 @@ export const DocumentSigningPageViewV1 = ({
 
           <div className="flex items-center gap-x-4">
             <DocumentSigningAttachmentsPopover envelopeId={document.envelopeId} token={recipient.token} />
-            <DocumentSigningRejectDialog documentId={document.id} token={recipient.token} />
           </div>
         </div>
 
