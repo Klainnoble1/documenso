@@ -204,6 +204,16 @@ export const UnifiedSettingsLayout = ({ activeScope, preferredTeamUrl = null }: 
         <div className="mx-auto w-full max-w-3xl py-6 md:py-8" data-testid="unified-settings-content">
           <SettingsScopeBreadcrumb scope={activeScope} scopeName={scopeName} crumbs={crumbs} />
           <Outlet />
+          <p className="mt-10 text-muted-foreground text-xs">
+            <a
+              href="https://github.com/Klainnoble1/documenso"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline"
+            >
+              Source code
+            </a>
+          </p>
         </div>
       </main>
     </div>
