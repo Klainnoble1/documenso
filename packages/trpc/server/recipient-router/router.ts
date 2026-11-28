@@ -1,7 +1,6 @@
 import { prepareCscRecipientSigning } from '@documenso/ee/server-only/signing/csc/prepare-recipient-signing';
 import { AppError, AppErrorCode } from '@documenso/lib/errors/app-error';
 import { completeDocumentWithToken } from '@documenso/lib/server-only/document/complete-document-with-token';
-import { rejectDocumentWithToken } from '@documenso/lib/server-only/document/reject-document-with-token';
 import { createEnvelopeRecipients } from '@documenso/lib/server-only/recipient/create-envelope-recipients';
 import { deleteEnvelopeRecipient } from '@documenso/lib/server-only/recipient/delete-envelope-recipient';
 import { getRecipientById } from '@documenso/lib/server-only/recipient/get-recipient-by-id';
@@ -676,23 +675,9 @@ export const recipientRouter = router({
   /**
    * @private
    */
-  rejectDocumentWithToken: procedure.input(ZRejectDocumentWithTokenMutationSchema).mutation(async ({ input, ctx }) => {
-    const { token, documentId, reason } = input;
-
-    ctx.logger.info({
-      input: {
-        documentId,
-      },
-    });
-
-    return await rejectDocumentWithToken({
-      token,
-      id: {
-        type: 'documentId',
-        id: documentId,
-      },
-      reason,
-      requestMetadata: ctx.metadata.requestMetadata,
+  rejectDocumentWithToken: procedure.input(ZRejectDocumentWithTokenMutationSchema).mutation(() => {
+    throw new AppError(AppErrorCode.INVALID_REQUEST, {
+      message: 'Signers cannot reject this document',
     });
   }),
 });
