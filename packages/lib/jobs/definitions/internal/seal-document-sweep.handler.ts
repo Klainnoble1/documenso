@@ -22,7 +22,7 @@ export const run = async ({ io }: { payload: TSealDocumentSweepJobDefinition; io
   // and 7 days ago. The lower bound avoids racing with the normal seal-document
   // job that fires on completion. The upper bound still retries a package whose
   // seal was lost because the server restarted, without retrying it forever.
-  const unsealedEnvelopes = await kyselyPrisma.$kysely
+  const eligibleEnvelopes = kyselyPrisma.$kysely
     .selectFrom('Envelope')
     .select(['Envelope.id', 'Envelope.secondaryId'])
     .where('Envelope.status', '=', sql.lit(DocumentStatus.PENDING))
@@ -71,30 +71,51 @@ export const run = async ({ io }: { payload: TSealDocumentSweepJobDefinition; io
           .whereRef('Recipient.envelopeId', '=', 'Envelope.id')
           .where('Recipient.signedAt', '>', retryWindowStart),
       ),
-    )
-    .limit(100)
-    .execute();
+    );
 
-  if (unsealedEnvelopes.length === 0) {
-    io.logger.info('No unsealed documents found');
-    return;
+  let lastEnvelopeId = '';
+  let found = 0;
+
+  for (;;) {
+    const unsealedEnvelopes = await eligibleEnvelopes
+      .where('Envelope.id', '>', lastEnvelopeId)
+      .orderBy('Envelope.id', 'asc')
+      .limit(100)
+      .execute();
+
+    if (unsealedEnvelopes.length === 0) {
+      break;
+    }
+
+    found += unsealedEnvelopes.length;
+    lastEnvelopeId = unsealedEnvelopes[unsealedEnvelopes.length - 1].id;
+
+    const results = await Promise.allSettled(
+      unsealedEnvelopes.map(async (envelope) => {
+        const documentId = mapSecondaryIdToDocumentId(envelope.secondaryId);
+
+        io.logger.info(`Triggering seal for document ${documentId} (${envelope.id})`);
+
+        await jobs.triggerJob({
+          name: 'internal.seal-document',
+          payload: {
+            documentId,
+            isResealing: true,
+          },
+        });
+      }),
+    );
+
+    for (const result of results) {
+      if (result.status === 'rejected') {
+        io.logger.error('Could not trigger seal job', { error: result.reason });
+      }
+    }
+
+    if (unsealedEnvelopes.length < 100) {
+      break;
+    }
   }
 
-  io.logger.info(`Found ${unsealedEnvelopes.length} unsealed documents`);
-
-  await Promise.allSettled(
-    unsealedEnvelopes.map(async (envelope) => {
-      const documentId = mapSecondaryIdToDocumentId(envelope.secondaryId);
-
-      io.logger.info(`Triggering seal for document ${documentId} (${envelope.id})`);
-
-      await jobs.triggerJob({
-        name: 'internal.seal-document',
-        payload: {
-          documentId,
-          isResealing: true,
-        },
-      });
-    }),
-  );
+  io.logger.info(`Found ${found} unsealed documents`);
 };
